@@ -1,152 +1,93 @@
-# Flipper Zero: System & Wi-Fi Sniffer Script
+### English
 
-A PowerShell-based system and network information gathering script designed for **educational and authorized testing purposes only**. This script collects basic system, network, and Wi-Fi details from a Windows machine.
+# 🐬 FlipperSniffer v1 (System & Network Sniffer)
 
-> ⚠️ **Disclaimer:** This tool is provided for educational and legitimate security assessment purposes only. The author is **not responsible** for any misuse, damage, or illegal activities conducted with this script. Use only on systems you own or have explicit permission to test.
+**FlipperSniffer** is an advanced BadUSB/DuckyScript payload designed for execution on Flipper Zero. This script enables fast, automated collection of system information, network data, and sensitive credentials from target Windows machines.
 
----
+To bypass DuckyScript string length limitations, the payload is split into multiple Base64-encoded fragments (~3.5 KB each). These fragments are reassembled and executed entirely in memory via PowerShell — eliminating the need to download any external files.
 
-## 📁 Script Overview
+## 🚀 Capabilities
 
-This repository contains a PowerShell script that runs via a Flipper Zero BadUSB payload (`system_sniffer.txt`). The script gathers:
+The script performs a deep system audit and collects the following data:
 
-- **System Info:** Computer name, username, OS, uptime
-- **Network Info:** Public IP, local IP, MAC address, gateway
-- **Wi-Fi Info:** Current SSID, BSSID (MAC), signal strength
-- **Process Info:** Top 5 processes by CPU usage
+* **System Information:** OS version, CPU model, RAM size, username, domain/workgroup, and system uptime.
+* **Storage:** List of logical drives with total size and available free space.
+* **Network & Connections:**  
+  * Public and local IP addresses, MAC address, default gateway.  
+  * Active TCP connections mapped to their owning processes.  
+  * Local ARP table.  
+* **Wi-Fi Audit:** Current network, all visible access points, plus **extraction of saved Wi-Fi profiles and their passwords**.  
+* **Browsers (Password Stores):** Decryption of local password databases (via DPAPI/Bcrypt) from popular browsers: Google Chrome, Microsoft Edge, Brave.  
+* **SSH & Developer Credentials:** Discovery of public and private SSH keys, plus reading `.gitconfig` files (hunting for tokens and emails).  
+* **System Credentials:** Retrieval of saved network passwords from Windows Credential Manager (`cmdkey`).  
+* **User Activity:** Clipboard contents and a list of the 15 most recently opened files.  
+* **Security & Monitoring:** Detection of installed antivirus software, Windows Defender Real-Time Protection status, and the top 7 processes by CPU usage.
 
-> ⚠️ **IMPORTANT:** Currently, the script **does NOT output Wi-Fi passwords** as this requires administrator privileges. UAC/admin rights bypass is under development. If you have information on how to implement this safely and legally — please share via Issues or Pull Requests!
+## ⚙️ Installation & Usage
 
----
+1. Save the script file to your PC (e.g., `sniffer_v3.txt`).
+2. Open the qFlipper desktop application.
+3. Copy the file to your Flipper Zero's SD card, into the `badusb` folder.
+4. Connect your Flipper Zero (unlocked) to a target Windows PC.
+5. Launch the script from the BadUSB menu.
 
-## 🚀 How to Use
+**How it works:** The script automatically opens the Run dialog (Win+R), spawns a PowerShell session with an execution policy bypass (`-ExecutionPolicy Bypass`), gathers all data, and saves a comprehensive `.txt` report to the `%TEMP%` directory. For convenience, a basic summary is also copied to the target machine's clipboard.
 
-### 1. Prepare the Flipper Zero
-- Copy the content of `system_sniffer.txt` to a `.txt` file on your Flipper Zero SD card under the `badusb` folder.
-- Rename the file with a `.txt` extension if needed.
+## 🛡️ Requirements
+* Flipper Zero (official firmware or any custom variant supporting BadUSB/DuckyScript).
+* Target machine running Windows 10 or 11.
+* Default US English keyboard layout on the target PC (required for correct DuckyScript keystroke injection).
 
-### 2. Execute the Payload
-- Plug the Flipper Zero into the target Windows computer.
-- Navigate to the BadUSB app on your Flipper.
-- Select the `system_sniffer.txt` payload.
-- The script will automatically open PowerShell and execute.
+## ⚠️ Disclaimer
 
-### 3. View the Output
-- The script runs in a visible PowerShell window.
-- Information is displayed in colored sections.
-- Press any key to exit when done.
+This project and its associated scripts are provided **for educational purposes and authorized security auditing only**.
 
----
-
-## 🔧 How It Works
-
-The script is Base64-encoded within the BadUSB payload to avoid command length limits and improve reliability. It decodes and executes a PowerShell script that:
-- Uses native Windows commands (`ipconfig`, `netsh`, `Get-WmiObject`)
-- Tries multiple regex patterns to extract network info reliably
-- **Does NOT extract Wi-Fi passwords without admin rights** (in current version)
-- Displays results in a structured, color-coded format
+The author assumes no liability for any direct or indirect damage, data leakage, or legal violations resulting from the use of this software. Unauthorized use of such tools against systems you do not own or have explicit permission to test is illegal.
 
 ---
 
-## 🔓 Limitations & Development
+### Русский
 
-### Current Limitations:
-1. **Wi-Fi passwords are NOT extracted** — requires administrator privileges
-2. **No UAC bypass** in current implementation
-3. Basic information gathering only, no privilege escalation
+# 🐬 FlipperSniffer v1 (Системный и Сетевой Сниффер)
 
-### Planned Improvements:
-- UAC bypass for extracting saved Wi-Fi passwords
-- Additional system information collection
-- Results export to file
+**FlipperSniffer** — это продвинутый BadUSB/DuckyScript пейлоад, созданный для запуска на Flipper Zero. Скрипт предназначен для быстрого автоматизированного сбора системной информации, сетевых данных и конфиденциальных учетных данных с целевых компьютеров под управлением Windows.
 
-**Need help!** If you know safe and legal methods for UAC bypass/obtaining Wi-Fi passwords without admin rights — please share in Issues! This is purely an educational project.
+Для обхода ограничений DuckyScript на длину строк, пейлоад разбит на несколько фрагментов в кодировке Base64 (~3.5 КБ каждый). Эти фрагменты собираются и выполняются полностью в памяти через PowerShell, что исключает необходимость загрузки каких-либо внешних файлов.
 
----
+## 🚀 Возможности
 
-## ⚠️ Legal & Ethical Warning
+Скрипт проводит глубокий аудит системы и собирает следующие данные:
 
-- **Use only on systems you own or have written permission to test.**
-- Unauthorized use may violate laws and policies.
-- This tool does **NOT hide** itself — it runs in a visible window.
-- **Extracting passwords without permission is illegal!**
-- The author assumes **NO liability** for any damages or legal issues arising from misuse.
+* **Системная информация:** Версия ОС, модель процессора, объем ОЗУ, имя пользователя, домен/рабочая группа и время работы системы.
+* **Хранилище:** Список логических дисков с общим объемом и доступным свободным местом.
+* **Сеть и подключения:**  
+  * Публичный и локальный IP-адреса, MAC-адрес, основной шлюз.  
+  * Активные TCP-соединения с привязкой к процессам.  
+  * Локальная ARP-таблица.  
+* **Wi-Fi аудит:** Текущая сеть, все видимые точки доступа, а также **извлечение сохраненных профилей Wi-Fi и паролей к ним**.  
+* **Браузеры (Хранилища паролей):** Расшифровка локальных баз паролей (через DPAPI/Bcrypt) из популярных браузеров: Google Chrome, Microsoft Edge, Brave.  
+* **SSH и учетные данные разработчика:** Поиск публичных и приватных SSH-ключей, а также чтение файлов `.gitconfig` (поиск токенов и email-адресов).  
+* **Системные учетные данные:** Извлечение сохраненных сетевых паролей из Windows Credential Manager (`cmdkey`).  
+* **Активность пользователя:** Содержимое буфера обмена и список 15 последних открытых файлов.  
+* **Безопасность и мониторинг:** Определение установленных антивирусов, статус Windows Defender (защита в реальном времени) и топ-7 процессов по загрузке процессора.
 
----
+## ⚙️ Установка и использование
 
-## 📸 Example Output
+1. Сохраните файл скрипта на ваш ПК (например, `sniffer_v3.txt`).
+2. Откройте приложение qFlipper на компьютере.
+3. Скопируйте файл на SD-карту вашего Flipper Zero в папку `badusb`.
+4. Подключите Flipper Zero (в разблокированном состоянии) к целевому ПК с Windows.
+5. Запустите скрипт через меню BadUSB.
 
-```
-=== FLIPPER ZERO, WI-FI & SYSTEM SNIFFER ===
-Collecting data...
+**Как это работает:** Скрипт автоматически открывает окно «Выполнить» (Win+R), запускает сессию PowerShell с обходом политик выполнения (`-ExecutionPolicy Bypass`), собирает все данные и сохраняет подробный отчет в формате `.txt` во временную папку `%TEMP%`. Для удобства краткая сводка также копируется в буфер обмена целевой машины.
 
-=== SYSTEM INFO ===
-  Computer:          DESKTOP-ABC123
-  User:              JohnDoe
-  OS:                Windows 10 Pro
-  Uptime:            12.5 hr
+## 🛡️ Требования
+* Flipper Zero (официальная прошивка или любой кастомный вариант с поддержкой BadUSB/DuckyScript).
+* Целевая машина под управлением Windows 10 или 11.
+* Английская раскладка клавиатуры (США) по умолчанию на целевом ПК (необходима для корректной эмуляции нажатий клавиш DuckyScript).
 
-=== NETWORK INFO ===
-  Public IP:          93.184.216.34
-  Local IP:           192.168.1.105
-  MAC Address:        AA:BB:CC:DD:EE:FF
-  Gateway:            192.168.1.1
+## ⚠️ Отказ от ответственности
 
-=== WI-FI INFO ===
-  Current Wi-Fi:      MyHomeWiFi
-  BSSID (MAC):        AA:BB:CC:11:22:33
-  Signal Strength:    85%
-  Password:           ADMIN RIGHTS REQUIRED
+Этот проект и прилагаемые к нему скрипты предоставляются **исключительно в образовательных целях и для санкционированного аудита безопасности**.
 
-=== PROCESSES ===
-  Top 5 processes by CPU Load:
-     chrome.exe         : CPU - 12.5%, RAM - 450.2 MB
-     ...
-
-============================
-    SUMMARY
-     > Computer:       DESKTOP-ABC123
-     > User:           JohnDoe
-     > Public IP:      93.184.216.34
-     > Local IP:       192.168.1.105
-     > MAC:            AA:BB:CC:DD:EE:FF
-     > Wi-Fi SSID:     MyHomeWiFi
-     > Wi-Fi Password: ADMIN RIGHTS REQUIRED
-============================
-```
-
----
-
-## 🛡️ Security Notes
-
-- The script does **NOT exfiltrate** data — it only displays it locally
-- **Does NOT extract passwords** without explicit administrator rights
-- Runs entirely in memory (temp file is deleted after execution)
-- All operations are transparent and visible to the user
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome, especially in:
-- Legal information gathering methods
-- Regex pattern optimization for network data
-- Output readability improvements
-- **Safe UAC bypass methods for educational purposes**
-
----
-
-## 📝 License
-
-This project is for **educational purposes only**. No warranty or support provided. Use at your own risk.
-
----
-
-## 🙌 Credits
-
-Created for the Flipper Zero community.  
-Use responsibly. Stay ethical. Hack the planet — with permission.
-
----
-
-> ⚠️ **Once again:** Project under development. Wi-Fi password extraction is not implemented due to Windows security requirements. Help improve the project with legal methods!
+Автор не несет ответственности за любой прямой или косвенный ущерб, утечку данных или нарушения закона, возникшие в результате использования данного программного обеспечения. Несанкционированное использование подобных инструментов против систем, которыми вы не владеете или на тестирование которых у вас нет явного разрешения, является незаконным.
