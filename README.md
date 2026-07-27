@@ -31,7 +31,7 @@ BadUSB payload for Flipper Zero that collects system and network information fro
 
 ### 🚀 Usage
 
-1. Copy `system_sniffer.txt` to `/badusb/` on your Flipper Zero SD card
+1. Copy `system_sniffer_v1.0.txt` to `/badusb/` on your Flipper Zero SD card
 2. On Flipper: **BadUSB** → select file → plug into target Windows machine
 3. Make sure the target machine has **English keyboard layout active**
 
@@ -80,7 +80,7 @@ BadUSB-пейлоад для Flipper Zero, который собирает си�
 
 ### 🚀 Использование
 
-1. Скопируй `system_sniffer.txt` в папку `/badusb/` на SD-карте Flipper Zero
+1. Скопируй `system_sniffer_v1.0.txt` в папку `/badusb/` на SD-карте Flipper Zero
 2. На Flipper: **BadUSB** → выбери файл → подключи к целевой Windows-машине
 3. Убедись что на целевой машине **активна английская раскладка**
 
